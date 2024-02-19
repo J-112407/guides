@@ -8,6 +8,40 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="box">just for test</div>
+    <input
+      type="text"
+      value="J----------- - - - ->"
+      placeholder="Type text here..."
+    />
+    <div id="drawing"></div>
   </body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.2.0/svg.min.js"
+    integrity="sha512-EmfT33UCuNEdtd9zuhgQClh7gidfPpkp93WO8GEfAP3cLD++UM1AG9jsTUitCI9DH5nF72XaFePME92r767dHA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>
+    var input = document.querySelector("input[type=text]");
+    var draw = SVG().addTo("#drawing").viewbox(0, 0, 300, 140);
+    var text = draw.text(function (add) {
+      add.tspan(input.value);
+    });
+
+    textPath = text.path("M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80");
+
+    textPath
+      .animate(1000)
+      .ease("<>")
+      .plot("M10 80 C 40 150, 65 150, 95 80 S 150 10, 180 80")
+      .loop(true, true);
+
+    input.addEventListener("keyup", updateText(textPath));
+
+    function updateText(textPath) {
+      return function () {
+        textPath.tspan(this.value);
+      };
+    }
+  </script>
 </html>
